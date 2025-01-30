@@ -6,8 +6,8 @@ pipeline {
         stage('Cleanup') {
             steps {
                 echo 'Cleaning up existing Containers and Images'
-                sh 'docker rm -f $(docker ps -aq) || true'
-                sh 'docker rmi -f $(docker images -q) || true'  
+                sh 'docker rm $(docker ps -aq) || true'
+                sh 'docker rmi $(docker images -q) || true'  
                 sh 'docker ps -a'
                 sh 'docker images'
             }
