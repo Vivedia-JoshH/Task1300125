@@ -6,8 +6,8 @@ pipeline {
         stage('Cleanup') {
             steps {
                 echo 'Cleaning up existing Containers and Images'
-                sh 'docker rm -f $(docker ps -aq)'  
-                sh 'docker rmi -f $(docker images -q)'  
+                sh 'docker rm -f $(docker ps -aq) || true'
+                sh 'docker rmi -f $(docker images -q) || true'  
                 sh 'docker ps -a'
                 sh 'docker images'
             }
@@ -26,7 +26,7 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh 'curl -f http://localhost:5500 || echo "Test failed"'  // Add error handling
+                sh 'curl -f http://localhost:5500 || echo "Test failed"' 
                 sh 'curl -f http://localhost:80 || echo "Nginx test failed"'
             }
         }
