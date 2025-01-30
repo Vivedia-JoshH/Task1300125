@@ -13,15 +13,16 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'docker build -t pyapp-image .'
                 sh 'docker network create jenkinsnetwork || true'
+                sh 'docker build -t pyapp-image .'
+                sh 'docker build -t mynginx -f Dockerfile.nginx'
                  
             }
         }
         stage('Run') {
             steps {
                 sh 'docker run -d --name pythonapp --network jenkinsnetwork pyapp-image'
-                sh 'docker run -d --name nginx --network jenkinsnetwork -p 80:80 -v nginx.conf:/etc/nginx/nginx.conf nginx:latest'
+                sh 'docker run -d --name nginx --network jenkinsnetwork -p 80:80 mynginx:latest'
             }
         }
         stage('Test') {
