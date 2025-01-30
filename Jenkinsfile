@@ -2,35 +2,34 @@
 pipeline {
     agent any
 
-    stages  {
-        stage('Cleanup'){
-            steps{
+    stages {
+        stage('Cleanup') {
+            steps {
                 echo 'Cleaning up existing Containers and Images'
-                sh docker rm -aq $(docker ps -a)
-                sh docker rmi $(docker images)
-                sh docker ps -a
-                sh docker images
-               
+                sh 'docker rm -f $(docker ps -aq)'  
+                sh 'docker rmi -f $(docker images -q)'  
+                sh 'docker ps -a'
+                sh 'docker images'
             }
         }
-        stage('Build'){
-            steps{
-                sh docker build -t pyapp-image .
-                sh docker network create jenkinsnetwork
-                
+        stage('Build') {
+            steps {
+                sh 'docker build -t pyapp-image .'  
+                sh 'docker network create jenkinsnetwork || true' 
             }
         }
-        stage('Run'){
-            steps{
-                sh docker run -d --name pythonapp --network jenkinsnetwork pyapp-image
-                sh docker run -d --name nginx --network jenkinsnetwork -p 80:80 -v /$(pwd)/nginx.conf:/etc/nginx/nginx.conf nginx:latest
+        stage('Run') {
+            steps {
+                sh 'docker run -d --name pythonapp --network jenkinsnetwork pyapp-image'
+                sh 'docker run -d --name nginx --network jenkinsnetwork -p 80:80 -v ${WORKSPACE}/nginx.conf:/etc/nginx/nginx.conf nginx:latest'
             }
         }
-        stage('Test'){
-            steps{
-                sh curl localhost
-                sh curl localhost:5500
+        stage('Test') {
+            steps {
+                sh 'curl -f http://localhost
+                sh 'curl -f http://localhost:80 
             }
         }
     }
 }
+
