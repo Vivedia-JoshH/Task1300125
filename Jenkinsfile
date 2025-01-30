@@ -21,7 +21,7 @@ pipeline {
         }
         stage('Run') {
             steps {
-                sh 'docker run -d --name pythonapp --network jenkinsnetwork pyapp-image'
+                sh 'docker run -d --name flask-app --network jenkinsnetwork pyapp-image'
                 sh 'docker run -d --name nginx --network jenkinsnetwork -p 80:80 mynginx:latest'
             }
         }
