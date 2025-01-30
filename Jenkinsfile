@@ -15,7 +15,7 @@ pipeline {
             steps {
                 sh 'docker network create jenkinsnetwork || true'
                 sh 'docker build -t pyapp-image .'
-                sh 'docker build -t mynginx -f Dockerfile.nginx'
+                sh 'docker build -t mynginx -f Dockerfile.nginx .'
                  
             }
         }
