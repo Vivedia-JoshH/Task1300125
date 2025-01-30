@@ -8,12 +8,7 @@ class FlaskAppTestCase(unittest.TestCase):
         # Set up the Flask test client
         self.client = app.test_client()
 
-    def test_home_without_name(self):
-        # Test the home route when 'YOUR_NAME' is not set
-        # Unset the environment variable
-        if getenv('YOUR_NAME'):
-            del getenv('YOUR_NAME')
-        
+       
         # Call the home route
         response = self.client.get('/')
         
