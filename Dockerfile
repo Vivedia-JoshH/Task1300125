@@ -3,7 +3,7 @@ FROM python:3.6
 # Copy contents into image
  COPY . .
 # Install pip dependencies from requirements
-pip Install -r requirements.txt
+pip install -r requirements.txt
 # Set YOUR_NAME environment variable
 ENV YOUR_NAME=Josh
 # Expose the correct port
